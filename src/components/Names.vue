@@ -12,7 +12,7 @@
           </p>
           <p>&nbsp;</p>
           <p class="has-text-justified">
-            Masz pomysł na jakieś naprawdę oryginalne i wyróżniające się imię? Sprawdź, czy inni też tak nie pomyśleli w
+            Masz pomysł na jakieś naprawdę oryginalne i wyróżniające się imię dla dziecka? Sprawdź, czy inni też tak nie pomyśleli w
             poprzednich latach 🧐
           </p>
 
@@ -82,9 +82,12 @@
                 <input
                   type="text"
                   pattern="[a-zA-Z]+"
-                  v-model="name"
+                  v-bind:value="name"
+                  v-on:input="listenKeyboard($event)"
                   class="input is-info"
-                  placeholder="Enter words to search"
+                  placeholder="Wpisz imię"
+                  autocomplete="off" 
+                  autocorrect="off"
                 />
                 <span class="icon is-medium is-left">
                   <i class="fas fa-pen"></i>
@@ -130,7 +133,7 @@
                     title="Zobacz wykres popularności w latach 2000-2019"
                   >
                     <span class="icon">
-                      <i class="fas fa-chart-area"></i>
+                      <i class="fas fa-chart-line"></i>
                     </span>
                   </button>
                 </td>
@@ -191,9 +194,12 @@ import axios from 'axios';
 export default {
   name: 'Names',
   metaInfo: {
-    title: 'Lista najpopularniejszych imion w Polsce ❤️',
+    title: 'Lista najpopularniejszych imion dla dzieci w Polsce ❤️',
     // override the parent template and just use the above title only
     titleTemplate: null,
+     link: [
+    {rel: 'canonical', href: 'https://imion.eu/names'}
+  ]
   },
   meta: [
     {
@@ -208,7 +214,7 @@ export default {
       users: [],
       favourites: [],
       gender: 'k',
-      name: null,
+      name: '',
       page: 0,
       rows: 10,
       total: null,
@@ -229,15 +235,13 @@ export default {
     }
     this.fetchNames();
   },
-  watch: {
-    name(value) {
-      this.name = value;
-      // console.log(value);
-      this.fetchNames(value);
-    },
-  },
   methods: {
-    fetchNames: function(name) {
+    listenKeyboard(event){
+      this.name = event.target.value;
+      // console.log(event.target.value);
+      this.fetchNames(event.target.value);
+    },
+    fetchNames(name) {
       let url = process.env.VUE_APP_URL;
       let gender = this.$data.gender;
       let page = this.$data.page;
@@ -245,35 +249,36 @@ export default {
       let req;
     
       if (name !== undefined && name !== null && name !== '') {
-        req = `${url}/idd/get_names?page=${page}&rows=10&gender=${gender}&name=${name}`;
+        req = `${url}/idd/get_names?page=0&rows=10&gender=${gender}&name=${name}`;
       }else{
         req = `${url}/idd/get_names?page=${page}&rows=10&gender=${gender}`;
       }
 
-      axios.get(req, { crossDomain: true }).then((res) => {
+      axios.get(req).then((res) => {
         this.users = res.data.names;
         this.page = res.data.page;
         this.total = res.data.totalCount;
       });
     },
-    clearInput: function() {
+    clearInput() {
       this.name = null;
+      // this.fetchNames();
     },
-    getNext: function() {
+    getNext() {
       if (this.$data.total > this.$data.rows * this.$data.page + 10) {
         this.$data.page += 1;
         localStorage.setItem('page_data', JSON.stringify(this.$data.page));
       }
       this.fetchNames();
     },
-    getPrev: function() {
+    getPrev() {
       if (this.$data.page >= 1) {
         this.$data.page -= 1;
         localStorage.setItem('page_data', JSON.stringify(this.$data.page));
         this.fetchNames();
       }
     },
-    switchGender: function() {
+    switchGender() {
       if (this.$data.gender == 'k') {
         this.$data.gender = 'm';
       } else {
@@ -283,7 +288,7 @@ export default {
       this.clearInput()
       this.fetchNames();
     },
-    showDetails: function(nameId) {
+    showDetails(nameId) {
       this.$router.push({ name: 'details', params: { id: nameId } });
     },
     resetPages() {
@@ -291,7 +296,7 @@ export default {
       localStorage.setItem('page_data', JSON.stringify(this.$data.page));
       this.fetchNames();
     },
-    addFavourite: function(idFav) {
+    addFavourite(idFav) {
       if (this.favourites) {
         if (this.favourites.includes(idFav)) {
           for (var i = 0; i < this.favourites.length; i++) {
@@ -316,7 +321,7 @@ td {
 }
 
 td:first-letter {
-  text-transform: capitalize !important;
+  text-transform: capitalize !important; /* TODO: Capitalize on backend */
 }
 
 table.center {

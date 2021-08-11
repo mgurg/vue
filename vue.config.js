@@ -6,12 +6,22 @@ module.exports = {
     plugins: [
       new PrerenderSPAPlugin({
         staticDir: path.resolve('dist'),
-        routes: ['/',],
+        routes: ['/', '/names', '/details'],
         renderer: new PrerenderSPAPlugin.PuppeteerRenderer({
           injectProperty: '__prerender',
           inject: {},
          })
       }),
     ]
-  }
+  },
+  pluginOptions: {
+		sitemap: {
+			urls: [
+				'https://imion.eu/',
+        'https://imion.eu/details',
+				'https://imion.eu/names',
+        'https://imion.eu/favourites',
+			]
+		}
+	}
 };

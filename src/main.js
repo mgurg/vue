@@ -1,18 +1,26 @@
 import Vue from 'vue';
 import App from './App.vue';
-import VueRouter from 'vue-router';
-
-import routes from './routes';
-
+import router from './router';
+import store from './store';
+import Axios from 'axios';
 import Chartkick from 'vue-chartkick';
 import Chart from 'chart.js';
 
 import Trend from 'vuetrend';
 import VueMeta from 'vue-meta';
 
-Vue.use(VueRouter);
+Vue.prototype.$http = Axios;
+const token = localStorage.getItem('token')
+if (token) {
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = token}
+
+//Vue Charts
 Vue.use(Chartkick.use(Chart));
+
+// Vue trend
 Vue.use(Trend);
+
+// Vue Meta
 Vue.use(VueMeta, {
   // optional pluginOptions
   refreshOnceOnNavigation: true,
@@ -20,9 +28,10 @@ Vue.use(VueMeta, {
 
 Vue.config.productionTip = false;
 
-const router = new VueRouter({ mode: 'history', routes });
+//
 
 new Vue({
-  render: (h) => h(App),
+  store,
   router,
+  render: (h) => h(App),
 }).$mount('#app');

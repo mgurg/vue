@@ -23,7 +23,7 @@
               <tbody>
                 <tr v-for="(user, index) in favDetails" v-bind:key="user.id">
                   <th>{{ index + 1 }}</th>
-                  <td><a href="http://wp.pl">{{ user.name }}</a></td>
+                  <td>{{ user.name }}</td>
                   <td>
                     <span class="icon">
                       <i :class="user.gender == 'K' ? 'fas fa-female' : 'fas fa-male'"></i>
@@ -31,8 +31,8 @@
                   </td>
                   <td>
                     <trend
-                      width="100"
-                      height="25"
+                      :width="100"
+                      :height="25"
                       :data="user.trend"
                       :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
                       :stroke-width="3"
@@ -65,10 +65,16 @@ import qs from 'qs';
 export default {
   name: 'Favourites',
   metaInfo: {
-    title: 'Najładniejsze imiona wybrane przez Ciebie ❤️',
+    title: 'Polskie imiona dla dzieci wybrane przez Ciebie ❤️',
     // override the parent template and just use the above title only
     titleTemplate: null,
+         link: [
+    {rel: 'canonical', href: 'https://imion.eu/favourites'}
+  ]
   },
+      meta: [
+      { property: 'og:url', content: 'https://imion.eu/favourites' },
+    ],
   data() {
     return {
       fav: [],
@@ -83,7 +89,7 @@ export default {
     this.fetchFav();
   },
   methods: {
-    fetchFav: function() {
+    fetchFav() {
       let url = process.env.VUE_APP_URL;
 
       if (this.fav.length == 0) {
@@ -97,7 +103,7 @@ export default {
         this.favDetails = res.data;
       });
     },
-    deleteFav: function(id) {
+    deleteFav(id) {
       if (this.fav) {
         if (this.fav.includes(id)) {
           for (var i = 0; i < this.fav.length; i++) {
