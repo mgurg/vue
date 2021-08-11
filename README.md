@@ -2,7 +2,7 @@
 
 Serwis pomagający wybrać imię. Wyświetla imiona wg popularności, możliwe jest zaznaczenie ulubionych.
 
-Wersja produkcyjna:  [imion.eu](imion.eu) 
+Wersja produkcyjna:  [imion.eu](https://imion.eu) 
 
 
 
