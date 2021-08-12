@@ -105,8 +105,8 @@
                 <th><abbr title="Numer">Nr</abbr></th>
                 <th>Imię</th>
                 <th>Liczba</th>
-                <th class="is-hidden-mobile">Trend</th>
                 <th></th>
+                <th class="is-hidden-mobile">Trend</th>
                 <th></th>
               </tr>
             </thead>
@@ -314,7 +314,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 td {
   text-transform: lowercase;
   vertical-align: middle !important;

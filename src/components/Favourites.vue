@@ -119,3 +119,24 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+td {
+  text-transform: lowercase;
+  vertical-align: middle !important;
+}
+
+td:first-letter {
+  text-transform: capitalize !important; /* TODO: Capitalize on backend */
+}
+
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.right {
+  text-align: right;
+  /* background:#333; */
+}
+</style>
