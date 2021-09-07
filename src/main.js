@@ -1,13 +1,15 @@
 import Vue from 'vue';
 import App from './App.vue';
-import router from './router';
-import store from './store';
+import router from './router/router.js';
+import store from './store/store.js';
 import Axios from 'axios';
 import Chartkick from 'vue-chartkick';
 import Chart from 'chart.js';
 
-import Trend from 'vuetrend';
 import VueMeta from 'vue-meta';
+
+// import VueQrcodeReader from "vue-qrcode-reader";
+// Vue.use(VueQrcodeReader);
 
 Vue.prototype.$http = Axios;
 const token = localStorage.getItem('token')
@@ -16,9 +18,6 @@ if (token) {
 
 //Vue Charts
 Vue.use(Chartkick.use(Chart));
-
-// Vue trend
-Vue.use(Trend);
 
 // Vue Meta
 Vue.use(VueMeta, {
